@@ -1,7 +1,13 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // ... (ваш существующий код)
+    // Додаємо обробник подій для кожного кнопки категорії
+    const categoryButtons = document.querySelectorAll('.budget form button');
+    categoryButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            toggleSelection(this);
+        });
+    });
 
-    // Добавляем обработчик формы для добавления записей
+    // Додаємо обробник події для форми при її відправці
     document.querySelector('.budget form').addEventListener('submit', function (event) {
         event.preventDefault();
 
@@ -10,53 +16,23 @@ document.addEventListener('DOMContentLoaded', function () {
         const amount = amountInput.value.trim();
 
         if (!selectedCategory) {
-            alert('Выберите категорию перед добавлением.');
+            alert('Оберіть категорію перед додаванням.');
         } else if (amount === '') {
-            alert('Введите сумму перед добавлением.');
+            alert('Введіть суму перед додаванням.');
         } else {
-            // Если выбрана категория и введена сумма, добавляем запись
-            const transaction = db.transaction(['budget'], 'readwrite');
-            const budgetStore = transaction.objectStore('budget');
+            // Додаємо розхід до списку
+            addExpense(selectedCategory.textContent, amount);
 
-            const request = budgetStore.add({ category: selectedCategory.textContent, amount: amount + ' грн' });
+            // Знімаємо виділення з обраної категорії та очищуємо поле вводу суми
+            selectedCategory.classList.remove('selected');
+            amountInput.value = '';
 
-            request.onsuccess = function (event) {
-                console.log('Expense added to database successfully');
-
-                // Сбрасываем выбранную категорию и очищаем поле ввода суммы
-                selectedCategory.classList.remove('selected');
-                amountInput.value = '';
-
-                // Обновляем список розходов
-                updateBudgetList();
-            };
-
-            request.onerror = function (event) {
-                console.error('Error adding expense to database:', event.target.error);
-            };
+            // Оновлюємо список розходів
+            updateBudgetList();
         }
     });
 
-    // ... (ваш существующий код)
-
-    // Функция для обновления данных в базе данных
-    function updateDataInDB(id, category, amount) {
-        const transaction = db.transaction(['budget'], 'readwrite');
-        const budgetStore = transaction.objectStore('budget');
-
-        const request = budgetStore.put({ id: id, category: category, amount: amount + ' грн' });
-
-        request.onsuccess = function (event) {
-            console.log('Data updated in database successfully');
-            updateBudgetList();
-        };
-
-        request.onerror = function (event) {
-            console.error('Error updating data in database:', event.target.error);
-        };
-    }
-
-    // Функция для добавления розходов в базу данных
+    // Функція для додавання розходів
     function addExpense(category, amount) {
         const transaction = db.transaction(['budget'], 'readwrite');
         const budgetStore = transaction.objectStore('budget');
@@ -64,11 +40,29 @@ document.addEventListener('DOMContentLoaded', function () {
         const request = budgetStore.add({ category: category, amount: amount + ' грн' });
 
         request.onsuccess = function (event) {
-            console.log('Expense added to database successfully');
+            console.log('Розхід додано до бази даних успішно');
         };
 
         request.onerror = function (event) {
-            console.error('Error adding expense to database:', event.target.error);
+            console.error('Помилка додавання розходу до бази даних:', event.target.error);
         };
+    }
+
+    // ... (ваш существующий код)
+
+    // Функція для оновлення списку розходів
+    function updateBudgetList() {
+        // ... (ваш код оновлення списку розходів)
+    }
+
+    // Функція для переключення виділення категорій
+    function toggleSelection(button) {
+        // Знімає виділення з усіх кнопок
+        categoryButtons.forEach(btn => {
+            btn.classList.remove('selected');
+        });
+
+        // Виділяє обрану кнопку
+        button.classList.add('selected');
     }
 });
