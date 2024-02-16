@@ -1,3 +1,13 @@
+document.querySelector('.budget form').addEventListener('submit', function (event) {
+    event.preventDefault();
+    
+    const selectedCategory = document.querySelector('.budget form .selected');
+    if (selectedCategory) {
+const selectedCategory = document.querySelector('.budget form .selected');
+if (selectedCategory && amount) {
+    // ... ваш текущий код ...
+}
+
 function toggleSelection(button) {
     button.classList.toggle('selected');
 }
@@ -21,4 +31,10 @@ document.querySelector('.budget form').addEventListener('submit', function (even
         document.getElementById('amount').value = '';
         document.querySelector('.budget form .selected').classList.remove('selected');
     }
+    
 });
+document.getElementById('amount').value = '';
+        selectedCategory.classList.remove('selected');
+    }
+});
+
