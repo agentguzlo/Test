@@ -2,6 +2,13 @@ document.querySelector('.budget form').addEventListener('submit', function (even
     event.preventDefault();
     
     const selectedCategory = document.querySelector('.budget form .selected');
+    const amount = document.getElementById('amount').value;
+
+    if (selectedCategory && amount.trim() !== '') {
+document.querySelector('.budget form').addEventListener('submit', function (event) {
+    event.preventDefault();
+    
+    const selectedCategory = document.querySelector('.budget form .selected');
     if (selectedCategory) {
 const selectedCategory = document.querySelector('.budget form .selected');
 if (selectedCategory && amount) {
@@ -35,6 +42,12 @@ document.querySelector('.budget form').addEventListener('submit', function (even
 });
 document.getElementById('amount').value = '';
         selectedCategory.classList.remove('selected');
+    }
+});
+        document.getElementById('amount').value = '';
+        selectedCategory.classList.remove('selected');
+    } else {
+        alert('Выберите категорию и введите сумму перед добавлением.');
     }
 });
 
